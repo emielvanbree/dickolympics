@@ -1287,18 +1287,13 @@ function drawHUD() {
   if(G.hitFlash>0){ ctx.fillStyle=`rgba(255,0,0,${G.hitFlash*0.35})`; ctx.fillRect(0,0,cw,ch); }
 
   // ── Pause button — sjekkie/cigarette top right ─────────────────
-  const pbX=cw-28, pbY=14, pbR=18;
+  const pbX=cw-36, pbY=90, pbR=22;
   ctx.save();
   ctx.shadowBlur=0; ctx.shadowColor='transparent';
-  // Circle background
-  ctx.fillStyle='rgba(0,0,0,0.55)';
-  ctx.beginPath(); ctx.arc(pbX,pbY,pbR,0,Math.PI*2); ctx.fill();
-  ctx.strokeStyle='rgba(255,215,0,0.7)'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.arc(pbX,pbY,pbR,0,Math.PI*2); ctx.stroke();
-  // Cigarette emoji
-  ctx.font=`${pbR*1.1}px sans-serif`;
+  // Cigarette emoji (no circle)
+  ctx.font=`${pbR*1.6}px sans-serif`;
   ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText('🚬',pbX,pbY+1);
+  ctx.fillText('🚬',pbX,pbY);
   ctx.restore();
 }
 
@@ -1431,7 +1426,7 @@ function draw() {
 
   drawBg();
 
-  if (G.state==='playing') {
+  if (G.state==='playing' && !G.paused) {
     // Depth sort: draw far (small y) first, close (large y) last
     const allObjs = [
       ...G.obstacles.map(o=>({...o,_type:'obs'})),
@@ -1476,7 +1471,7 @@ function draw() {
     drawHUD();
 
   } else if (G.state==='playing' && G.paused) {
-    // Still render game behind pause screen
+    // Render frozen game behind pause screen
     [...G.obstacles.map(o=>({...o,_type:'obs'})),...G.powerups.map(p=>({...p,_type:'pu'})),...G.enemies.map(e=>({...e,_type:'enemy'}))].sort((a,b)=>a.y-b.y).forEach(o=>o._type==='obs'?drawObs(o):o._type==='pu'?drawPU(o):drawEnemy(o));
     G.cans.forEach(drawCan); drawDick(); drawHUD(); drawPause();
   } else if (G.state==='menu') {
@@ -1515,9 +1510,9 @@ function checkLaneDanger() {
 function onDown(x,y) {
   initAudio(); touchX0=x; touchY0=y; touchT0=Date.now(); gesture='idle';
   if(G.state==='menu'){ const h=H(); if(y>h*0.61&&y<h*0.675) startGame(); return; }
-  // Pause button (cigarette, top right)
-  if(G.state==='playing' && !G.paused){
-    if(Math.hypot(x-(W()-28), y-14) < 22){ G.paused=true; initAudio(); return; }
+  // Pause button (cigarette, top right) — toggle pauze
+  if(G.state==='playing'){
+    if(Math.hypot(x-(W()-36), y-90) < 32){ G.paused=!G.paused; initAudio(); return; }
   }
   // Pause screen buttons
   if(G.state==='playing' && G.paused){
