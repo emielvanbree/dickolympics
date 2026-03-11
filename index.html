@@ -529,5 +529,19 @@ loop();
   }
 
 </script>
+<div id="ov" style="position:fixed;inset:0;z-index:9999;background:rgba(8,6,18,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;font-family:Arial Black,Arial,sans-serif;">
+  <div style="font-size:clamp(40px,14vw,72px);margin-bottom:16px;filter:drop-shadow(0 0 20px rgba(255,180,0,0.7))">🏅</div>
+  <div style="font-size:clamp(22px,6vw,38px);color:#ffd700;font-weight:900;line-height:1.15;text-shadow:0 0 20px rgba(255,200,0,0.6),3px 3px 0 #7a4000;margin-bottom:8px;">WELKOM BY DE<br>DICK-O-LYMPICS</div>
+  <div style="font-size:clamp(13px,3.5vw,18px);color:rgba(255,255,255,0.55);margin-bottom:36px;font-weight:normal;font-family:Arial,sans-serif;">de olympische spelen van Arnhem-Zuid</div>
+  <button id="startBtn" style="background:linear-gradient(135deg,#9a1c08,#6a0e04);border:2px solid rgba(255,100,50,0.5);border-radius:14px;color:#fff;font-family:Arial Black,Arial,sans-serif;font-size:clamp(16px,4.5vw,22px);font-weight:900;padding:clamp(14px,3.5vw,20px) clamp(28px,8vw,48px);cursor:pointer;box-shadow:0 4px 20px rgba(180,30,10,0.5);letter-spacing:0.05em;">🍺 Klik hier om te starten</button>
+</div>
+
+<script>
+  document.getElementById('startBtn').addEventListener('click', function() {
+    document.getElementById('ov').style.display = 'none';
+    document.getElementById('bgMusic').play().catch(function(){});
+    window.audioStarted = true;
+  });
+</script>
 </body>
 </html>
